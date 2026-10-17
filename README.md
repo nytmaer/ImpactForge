@@ -1,5 +1,7 @@
 # ImpactForge
 
+[![Support on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/nytmaer)
+
 A browser tool that turns a pair of animation frames into an anime-style
 impact frame — the "hit" flash you see between action beats. Everything is
 generated procedurally with Canvas 2D: no server, no image model, no
@@ -78,3 +80,7 @@ code.
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+## Support
+
+If you find this project useful, you can support its development on Ko-fi: **[ko-fi.com/nytmaer](https://ko-fi.com/nytmaer)**
