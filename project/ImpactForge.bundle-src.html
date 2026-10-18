@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<template id="__bundler_thumbnail" data-bg-color="#161826">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#161826"/>
+    <path d="M600 90 L700 380 L980 330 L760 520 L880 720 L600 570 L320 720 L440 520 L220 330 L500 380 Z" fill="none" stroke="#9184d9" stroke-width="14" stroke-linejoin="round"/>
+    <circle cx="600" cy="400" r="58" fill="#9184d9"/>
+  </svg>
+</template>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_ds/nocturne-84b89d52-baa9-4db1-af4b-3f9c3a9eefb5/styles.css">
+<script src="_ds/nocturne-84b89d52-baa9-4db1-af4b-3f9c3a9eefb5/_ds_bundle.js"></script>
+<style>
+  html, body { background: #161826; }
+  input[type=range] { accent-color: var(--color-accent); width: 100%; height: 18px; }
+  a, a:hover { color: var(--color-accent); }
+</style>
+</helmet>
+<div data-forge="1" style="min-height:100vh;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);display:flex;flex-direction:column">
+
+  <div style="display:flex;align-items:center;gap:var(--space-6);padding:var(--space-4) var(--space-8);border-bottom:1px solid var(--color-divider)">
+    <div style="display:flex;align-items:baseline;gap:10px">
+      <span style="font-family:var(--font-heading);font-weight:500;font-size:17px;letter-spacing:-0.01em">ImpactForge</span>
+      <span style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 45%, transparent)">procedural impact frames</span>
+    </div>
+    <div style="flex:1"></div>
+    <span class="tag tag-outline" style="font-size:11px;white-space:nowrap">canvas 2d · no server</span>
+  </div>
+
+  <div style="flex:1;display:grid;grid-template-columns:250px minmax(0,1fr) 244px;gap:var(--space-6);padding:var(--space-6) var(--space-8);align-items:start">
+
+    <div style="display:flex;flex-direction:column;gap:var(--space-6)">
+      <div style="background:var(--color-surface);border:1px solid var(--color-divider);border-radius:var(--radius-md);padding:var(--space-4)">
+        <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 55%, transparent);margin-bottom:var(--space-3)">Source frames</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)">
+          <div onClick="{{ pickA }}" onDrop="{{ dropA }}" onDragOver="{{ prevent }}" style="position:relative;aspect-ratio:16/9;border:1px dashed color-mix(in srgb, var(--color-text) 28%, transparent);border-radius:var(--radius-sm);overflow:hidden;cursor:pointer;background:#101220;display:flex;align-items:center;justify-content:center">
+            <img data-el="thumbA" alt="frame A" style="width:100%;height:100%;object-fit:cover">
+            <sc-if value="{{ noA }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px;color:color-mix(in srgb, var(--color-text) 45%, transparent)">drop A</span></sc-if>
+            <span style="position:absolute;left:4px;top:3px;font-size:10px;letter-spacing:0.1em;color:var(--color-accent-300);text-shadow:0 1px 3px #000">A</span>
+          </div>
+          <div onClick="{{ pickB }}" onDrop="{{ dropB }}" onDragOver="{{ prevent }}" style="position:relative;aspect-ratio:16/9;border:1px dashed color-mix(in srgb, var(--color-text) 28%, transparent);border-radius:var(--radius-sm);overflow:hidden;cursor:pointer;background:#101220;display:flex;align-items:center;justify-content:center">
+            <img data-el="thumbB" alt="frame B" style="width:100%;height:100%;object-fit:cover">
+            <sc-if value="{{ noB }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px;color:color-mix(in srgb, var(--color-text) 45%, transparent)">drop B</span></sc-if>
+            <span style="position:absolute;left:4px;top:3px;font-size:10px;letter-spacing:0.1em;color:var(--color-accent-300);text-shadow:0 1px 3px #000">B</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:var(--space-2);margin-top:var(--space-3)">
+          <button class="btn btn-secondary" onClick="{{ loadDemo }}" style="flex:1;font-size:12px">Demo pair</button>
+          <button class="btn btn-secondary" onClick="{{ clearFrames }}" style="flex:1;font-size:12px">Clear</button>
+        </div>
+        <input type="file" accept="image/*" data-el="fileA" onChange="{{ onFileA }}" style="display:none">
+        <input type="file" accept="image/*" data-el="fileB" onChange="{{ onFileB }}" style="display:none">
+      </div>
+
+      <div style="background:var(--color-surface);border:1px solid var(--color-divider);border-radius:var(--radius-md);padding:var(--space-4)">
+        <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 55%, transparent);margin-bottom:var(--space-3)">Presets</div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+          <sc-for list="{{ presetCards }}" as="p" hint-placeholder-count="5">
+            <div onClick="{{ p.select }}" style="position:relative;display:flex;gap:var(--space-3);align-items:center;padding:var(--space-2);border:1px solid var(--color-divider);border-radius:var(--radius-sm);cursor:pointer;background:#14161f">
+              <canvas data-preset="{{ p.id }}" width="128" height="72" style="width:72px;height:41px;border-radius:2px;display:block;flex:none"></canvas>
+              <div style="min-width:0">
+                <div style="font-family:var(--font-heading);font-weight:500;font-size:13px;line-height:1.2">{{ p.name }}</div>
+                <div style="font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 42%, transparent);margin-top:2px">{{ p.layerNote }}</div>
+              </div>
+              <sc-if value="{{ p.active }}" hint-placeholder-val="{{ false }}">
+                <span style="position:absolute;inset:-1px;border:2px solid var(--color-accent);border-radius:var(--radius-sm);pointer-events:none"></span>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:var(--space-4);min-width:0">
+      <div style="position:relative;border:1px solid var(--color-divider);border-radius:var(--radius-md);overflow:hidden;background:#0b0c12;box-shadow:var(--shadow-md)">
+        <canvas data-el="stage" style="display:block;width:100%;height:auto"></canvas>
+        <canvas data-el="overlay" onPointerDown="{{ onStagePointer }}" style="position:absolute;inset:0;width:100%;height:100%;cursor:crosshair"></canvas>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:var(--space-4);background:var(--color-surface);border:1px solid var(--color-divider);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4)">
+        <div onClick="{{ pickV }}" onDrop="{{ dropV }}" onDragOver="{{ prevent }}" title="Drop a video clip" style="position:relative;flex:none;width:112px;height:63px;border:1px dashed color-mix(in srgb, var(--color-text) 28%, transparent);border-radius:var(--radius-sm);overflow:hidden;cursor:pointer;background:#101220;display:flex;align-items:center;justify-content:center">
+          <video data-el="video" muted playsinline style="width:100%;height:100%;object-fit:cover;display:none"></video>
+          <canvas data-el="clipCanvas" width="112" height="63" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none"></canvas>
+          <span data-el="videoHint" style="font-size:11px;text-align:center;line-height:1.3;color:color-mix(in srgb, var(--color-text) 45%, transparent)">drop video<br>or GIF</span>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:color-mix(in srgb, var(--color-text) 70%, transparent)"><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ videoLabel }}</span><span style="white-space:nowrap;padding-left:8px">{{ trimLabel }}{{ timeLabel }}</span></div>
+          <input type="range" min="{{ clipMin }}" max="{{ clipMax }}" step="{{ clipStep }}" value="{{ clipPos }}" disabled="{{ noVideo }}" onChange="{{ setTime }}" onInput="{{ setTime }}">
+          <div style="display:flex;gap:var(--space-2);flex-wrap:wrap;margin-top:var(--space-1)">
+            <button class="btn btn-secondary" style="font-size:12px;white-space:nowrap" disabled="{{ noVideo }}" onClick="{{ stepBack }}">&#8249; frame</button>
+            <button class="btn btn-secondary" style="font-size:12px;white-space:nowrap" disabled="{{ noVideo }}" onClick="{{ stepFwd }}">frame &#8250;</button>
+            <button class="btn btn-secondary" style="font-size:12px;white-space:nowrap" disabled="{{ noVideo }}" onClick="{{ grabA }}">Set A</button>
+            <button class="btn btn-secondary" style="font-size:12px;white-space:nowrap" disabled="{{ noVideo }}" onClick="{{ grabB }}">Set B</button>
+            <button class="btn btn-secondary" style="font-size:12px;white-space:nowrap" disabled="{{ noVideo }}" onClick="{{ grabPair }}">A + next</button>
+            <button class="btn btn-primary" style="font-size:12px;white-space:nowrap" disabled="{{ noVideo }}" onClick="{{ findImpact }}">{{ scanLabel }}</button>
+            <span style="flex:1"></span>
+            <button class="btn btn-secondary" style="font-size:12px;white-space:nowrap" title="Trim start to playhead" disabled="{{ noVideo }}" onClick="{{ setIn }}">[ in</button>
+            <button class="btn btn-secondary" style="font-size:12px;white-space:nowrap" title="Trim end to playhead" disabled="{{ noVideo }}" onClick="{{ setOut }}">out ]</button>
+            <button class="btn btn-ghost" style="font-size:12px;white-space:nowrap" disabled="{{ noTrim }}" onClick="{{ clearTrim }}">reset trim</button>
+            <button class="btn btn-ghost" style="font-size:12px;white-space:nowrap" disabled="{{ noVideo }}" onClick="{{ clearClip }}">remove clip</button>
+          </div>
+        </div>
+        <input type="file" accept="video/*,image/gif" data-el="fileV" onChange="{{ onFileV }}" style="display:none">
+      </div>
+
+      <div style="display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap">
+        <button class="btn btn-primary" style="white-space:nowrap" onClick="{{ exportPng }}">Export PNG</button>
+        <button class="btn btn-secondary" style="white-space:nowrap" onClick="{{ exportSeq }}">PNG sequence</button>
+        <button class="btn btn-secondary" style="white-space:nowrap;min-width:104px" onClick="{{ copyPng }}">{{ copyLabel }}</button>
+        <div style="flex:1"></div>
+        <label class="radio" style="font-size:12px"><input type="checkbox" checked="{{ onion }}" onChange="{{ toggleOnion }}"><span class="dot"></span>Onion skin B</label>
+        <label class="radio" style="font-size:12px"><input type="checkbox" checked="{{ playing }}" onChange="{{ togglePlay }}"><span class="dot"></span>Play hold</label>
+      </div>
+
+      <sc-if value="{{ showDiag }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-3);font-size:11px">
+          <div style="background:var(--color-surface);border:1px solid var(--color-divider);border-radius:var(--radius-sm);padding:var(--space-3)">
+            <div style="letter-spacing:0.08em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 45%, transparent)">Epicenter</div>
+            <div style="font-size:14px;margin-top:2px">{{ epiLabel }}</div>
+          </div>
+          <div style="background:var(--color-surface);border:1px solid var(--color-divider);border-radius:var(--radius-sm);padding:var(--space-3)">
+            <div style="letter-spacing:0.08em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 45%, transparent)">Principal axis</div>
+            <div style="font-size:14px;margin-top:2px">{{ axisLabel }}</div>
+          </div>
+          <div style="background:var(--color-surface);border:1px solid var(--color-divider);border-radius:var(--radius-sm);padding:var(--space-3)">
+            <div style="letter-spacing:0.08em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 45%, transparent)">Energy</div>
+            <div style="font-size:14px;margin-top:2px">{{ energyLabel }}</div>
+          </div>
+          <div style="background:var(--color-surface);border:1px solid var(--color-divider);border-radius:var(--radius-sm);padding:var(--space-3)">
+            <div style="letter-spacing:0.08em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 45%, transparent)">Last pass</div>
+            <div style="font-size:14px;margin-top:2px">{{ timingLabel }}</div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:var(--space-6)">
+      <div style="background:var(--color-surface);border:1px solid var(--color-divider);border-radius:var(--radius-md);padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-4)">
+        <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 55%, transparent)">Controls</div>
+
+        <div>
+          <div style="font-size:12px;color:color-mix(in srgb, var(--color-text) 70%, transparent);margin-bottom:6px">Subject from</div>
+          <div class="seg" style="width:100%">
+            <label class="seg-opt" style="flex:1;justify-content:center"><input type="radio" name="masksrc" value="lum" checked="{{ maskLum }}" onChange="{{ setMaskLum }}">Brightness</label>
+            <label class="seg-opt" style="flex:1;justify-content:center"><input type="radio" name="masksrc" value="motion" checked="{{ maskMotion }}" onChange="{{ setMaskMotion }}">Motion A&#8594;B</label>
+          </div>
+          <div style="font-size:11px;line-height:1.4;margin-top:5px;color:color-mix(in srgb, var(--color-text) 45%, transparent)">{{ maskNote }}</div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:color-mix(in srgb, var(--color-text) 70%, transparent)"><span style="display:flex;gap:6px;align-items:baseline">Threshold<button class="btn btn-ghost" style="font-size:10px;letter-spacing:0.06em;text-transform:uppercase;padding:0 2px" onClick="{{ autoThreshold }}">auto</button></span><span>{{ thresholdLabel }}</span></div>
+          <input type="range" min="0" max="255" step="1" value="{{ threshold }}" onChange="{{ setThreshold }}" onInput="{{ setThreshold }}">
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:color-mix(in srgb, var(--color-text) 70%, transparent)"><span>Intensity</span><span>{{ intensityLabel }}</span></div>
+          <input type="range" min="0" max="1" step="0.01" value="{{ intensity }}" onChange="{{ setIntensity }}" onInput="{{ setIntensity }}">
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:color-mix(in srgb, var(--color-text) 70%, transparent)"><span>Count</span><span>{{ countLabel }}</span></div>
+          <input type="range" min="2" max="48" step="1" value="{{ count }}" onChange="{{ setCount }}" onInput="{{ setCount }}">
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:color-mix(in srgb, var(--color-text) 70%, transparent)"><span>Hold frames</span><span>{{ holdLabel }}</span></div>
+          <input type="range" min="1" max="6" step="1" value="{{ holdFrames }}" onChange="{{ setHold }}" onInput="{{ setHold }}">
+        </div>
+
+        <div>
+          <div style="font-size:12px;color:color-mix(in srgb, var(--color-text) 70%, transparent);margin-bottom:6px">Palette</div>
+          <div style="display:flex;gap:var(--space-2)">
+            <sc-for list="{{ paletteChips }}" as="pal" hint-placeholder-count="4">
+              <button onClick="{{ pal.select }}" title="{{ pal.name }}" style="position:relative;flex:1;height:30px;border-radius:var(--radius-sm);border:1px solid var(--color-divider);cursor:pointer;overflow:hidden;padding:0;background:{{ pal.bg }}">
+                <span style="position:absolute;right:5px;bottom:5px;width:12px;height:12px;border-radius:50%;background:{{ pal.fg }}"></span>
+                <sc-if value="{{ pal.active }}" hint-placeholder-val="{{ false }}">
+                  <span style="position:absolute;inset:0;border:2px solid var(--color-accent);border-radius:var(--radius-sm)"></span>
+                </sc-if>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+
+        <label class="radio" style="font-size:13px"><input type="checkbox" checked="{{ invert }}" onChange="{{ toggleInvert }}"><span class="dot"></span>Invert subject</label>
+        <label class="radio" style="font-size:13px"><input type="checkbox" checked="{{ showMask }}" onChange="{{ toggleShowMask }}"><span class="dot"></span>Show mask</label>
+
+        <div class="field">
+          <label>Output</label>
+          <select class="input" value="{{ sizeKey }}" onChange="{{ setSize }}">
+            <option value="720x405">720 × 405</option>
+            <option value="960x540">960 × 540</option>
+            <option value="1280x720">1280 × 720</option>
+            <option value="1080x1080">1080 × 1080</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="border:1px solid var(--color-divider);border-radius:var(--radius-md);padding:var(--space-4);font-size:12px;line-height:1.5;color:color-mix(in srgb, var(--color-text) 60%, transparent)">
+        Drag on the stage to move the epicenter. The arrow is the principal axis of the changed pixels between A and B — debris and speed lines streak along it.
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:820},&quot;startPreset&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;shatter&quot;,&quot;debris&quot;,&quot;burst&quot;,&quot;bloom&quot;,&quot;glitch&quot;],&quot;default&quot;:&quot;shatter&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showDiagnostics&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;railPreviews&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const PALETTES = [
+  { id: 'mono',   name: 'Mono',    bg: '#0e0f16', fg: '#eef0f6' },
+  { id: 'inv',    name: 'Invert',  bg: '#e9e9ed', fg: '#14161f' },
+  { id: 'accent', name: 'Blurple', bg: '#161826', fg: '#b5abfc' },
+  { id: 'ghost',  name: 'Ghost',   bg: '#2b2741', fg: '#d2cefd' }
+];
+
+const PRESETS = [
+  { id: 'shatter', name: 'Shatter', palette: 'mono', layers: [
+    { type: 'flood', color: 'bg' },
+    { type: 'wedges', color: 'fg', count: '$count', spread: [0.04, 0.20], length: [0.5, 1.2], origin: 'epicenter', jitter: 0.25 },
+    { type: 'silhouette', source: 'A', color: 'bg', alpha: 0.92 },
+    { type: 'core', color: 'fg', radius: '$intensity*40+6' }
+  ] },
+  { id: 'debris', name: 'Debris field', palette: 'inv', layers: [
+    { type: 'flood', color: 'bg' },
+    { type: 'silhouette', source: 'A', color: 'fg' },
+    { type: 'chips', color: 'fg', count: '$count*3', size: [1.5, 10.5], spread: 0.45, alignTo: 'vector' },
+    { type: 'speedLines', color: 'fg', count: 12, angleFrom: 'vector', length: 0.6, thickness: 2 }
+  ] },
+  { id: 'burst', name: 'Speed burst', palette: 'mono', layers: [
+    { type: 'flood', color: 'bg' },
+    { type: 'speedLines', color: 'fg', count: '$count+8', angleFrom: 'vector', length: 0.95, thickness: 3 },
+    { type: 'star', color: 'fg', points: '$count/2+4', spread: 0.05, length: 1.1 },
+    { type: 'silhouette', source: 'A', color: 'bg', alpha: 0.96, dilate: 1 },
+    { type: 'core', color: 'fg', radius: '$intensity*26+4' }
+  ] },
+  { id: 'bloom', name: 'Void bloom', palette: 'ghost', layers: [
+    { type: 'flood', color: 'bg' },
+    { type: 'blobs', color: 'fg', count: '$count', radius: [6, 46], spread: 0.34, vertices: 9, wobble: 0.55 },
+    { type: 'silhouette', source: 'A', color: 'fg', alpha: 0.96, dilate: 1 },
+    { type: 'core', color: 'fg', radius: '$intensity*18+4' },
+    { type: 'chips', color: 'fg', count: '$count', size: [1, 5], spread: 0.5, alignTo: 'radial' }
+  ] },
+  { id: 'glitch', name: 'Glitch cut', palette: 'accent', layers: [
+    { type: 'flood', color: 'bg' },
+    { type: 'silhouette', source: 'A', color: 'fg' },
+    { type: 'wedges', color: 'fg', count: '$count/4', spread: [0.05, 0.18], length: [0.8, 1.4], origin: 'epicenter', jitter: 0.6 },
+    { type: 'rgbSplit', offset: '$intensity*7+1', contrast: 1.1 },
+    { type: 'scanlines', count: 90, thickness: 1, opacity: 0.18 },
+    { type: 'grain', amount: '$intensity*46' }
+  ] }
+];
+
+function mulberry(seed) {
+  let a = seed >>> 0;
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function evalExpr(src, vars) {
+  const s = String(src).replace(/\$([a-zA-Z_]\w*)/g, (m, k) => {
+    const v = Number(vars[k]);
+    return '(' + (isFinite(v) ? v : 0) + ')';
+  });
+  let i = 0;
+  const skip = () => { while (s[i] === ' ') i++; };
+  function unary() {
+    skip();
+    if (s[i] === '(') { i++; const v = expr(); skip(); if (s[i] === ')') i++; return v; }
+    if (s[i] === '-') { i++; return -unary(); }
+    if (s[i] === '+') { i++; return unary(); }
+    const j = i;
+    while (i < s.length && /[0-9.]/.test(s[i])) i++;
+    return parseFloat(s.slice(j, i));
+  }
+  function term() {
+    let v = unary();
+    for (;;) { skip(); const c = s[i];
+      if (c === '*' || c === '/') { i++; const r = unary(); v = c === '*' ? v * r : v / r; } else return v; }
+  }
+  function expr() {
+    let v = term();
+    for (;;) { skip(); const c = s[i];
+      if (c === '+' || c === '-') { i++; const r = term(); v = c === '+' ? v + r : v - r; } else return v; }
+  }
+  const out = expr();
+  return isFinite(out) ? out : 0;
+}
+
+function makeCanvas(w, h) {
+  const c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  return c;
+}
+
+function resample(src, w, h) {
+  const c = makeCanvas(w, h);
+  const x = c.getContext('2d');
+  x.fillStyle = '#808080';
+  x.fillRect(0, 0, w, h);
+  const s = Math.min(w / src.width, h / src.height);
+  const dw = src.width * s, dh = src.height * s;
+  x.drawImage(src, (w - dw) / 2, (h - dh) / 2, dw, dh);
+  return c;
+}
+
+function luminance(cv) {
+  const d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data;
+  const out = new Float32Array(cv.width * cv.height);
+  for (let i = 0, p = 0; i < out.length; i++, p += 4) {
+    out[i] = 0.2126 * d[p] + 0.7152 * d[p + 1] + 0.0722 * d[p + 2];
+  }
+  return out;
+}
+
+function blurArray(src, w, h) {
+  const out = new Float32Array(src.length);
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      let sum = 0, n = 0;
+      for (let dy = -2; dy <= 2; dy++) {
+        const yy = y + dy;
+        if (yy < 0 || yy >= h) continue;
+        for (let dx = -2; dx <= 2; dx++) {
+          const xx = x + dx;
+          if (xx < 0 || xx >= w) continue;
+          sum += src[yy * w + xx]; n++;
+        }
+      }
+      out[y * w + x] = sum / n;
+    }
+  }
+  return out;
+}
+
+function maskFrom(lum, w, h, threshold, invert) {
+  const c = makeCanvas(w, h);
+  const x = c.getContext('2d');
+  const img = x.createImageData(w, h);
+  const d = img.data;
+  for (let i = 0, p = 0; i < lum.length; i++, p += 4) {
+    const on = invert ? lum[i] < threshold : lum[i] >= threshold;
+    d[p] = d[p + 1] = d[p + 2] = 255;
+    d[p + 3] = on ? 255 : 0;
+  }
+  x.putImageData(img, 0, 0);
+  return c;
+}
+
+function diffStats(la, lb, w, h) {
+  if (!la || !lb) return null;
+  let n = 0, sx = 0, sy = 0;
+  const xs = [], ys = [];
+  let fx = 0, fy = 0, fn = 0, bx = 0, by = 0, bn = 0;
+  const step = w * h > 400000 ? 2 : 1;
+  for (let y = 0; y < h; y += step) {
+    for (let x = 0; x < w; x += step) {
+      const i = y * w + x;
+      const d = lb[i] - la[i];
+      if (Math.abs(d) < 20) continue;
+      n++; sx += x; sy += y; xs.push(x); ys.push(y);
+      if (d > 0) { fx += x; fy += y; fn++; } else { bx += x; by += y; bn++; }
+    }
+  }
+  const total = Math.ceil(w / step) * Math.ceil(h / step);
+  if (n < 8) return { epicenter: { x: 0.5, y: 0.5 }, vector: { dx: 1, dy: 0 }, energy: 0, weak: true };
+  const cx = sx / n, cy = sy / n;
+  let sxx = 0, syy = 0, sxy = 0;
+  for (let k = 0; k < xs.length; k++) {
+    const dx = xs[k] - cx, dy = ys[k] - cy;
+    sxx += dx * dx; syy += dy * dy; sxy += dx * dy;
+  }
+  let ang = 0.5 * Math.atan2(2 * sxy, sxx - syy);
+  let dx = Math.cos(ang), dy = Math.sin(ang);
+  if (fn && bn) {
+    const mx = fx / fn - bx / bn, my = fy / fn - by / bn;
+    if (mx * dx + my * dy < 0) { dx = -dx; dy = -dy; }
+  }
+  return {
+    epicenter: { x: cx / w, y: cy / h },
+    vector: { dx: dx, dy: dy },
+    energy: Math.min(1, n / total),
+    weak: false
+  };
+}
+
+const LAYERS = {
+  flood(ctx, L, S) { ctx.fillStyle = S.col(L.color); ctx.fillRect(0, 0, S.w, S.h); },
+
+  silhouette(ctx, L, S) {
+    const m = L.source === 'B' ? S.maskB : S.maskA;
+    if (!m) return;
+    const dil = S.n(L.dilate, 0);
+    const t = makeCanvas(S.w, S.h);
+    const tx = t.getContext('2d');
+    if (dil > 0) {
+      const r = dil * S.k;
+      for (let a = 0; a < 8; a++) tx.drawImage(m, Math.cos(a * 0.785) * r, Math.sin(a * 0.785) * r);
+    }
+    tx.drawImage(m, 0, 0);
+    tx.globalCompositeOperation = 'source-in';
+    tx.fillStyle = S.col(L.color);
+    tx.fillRect(0, 0, S.w, S.h);
+    ctx.save();
+    ctx.globalAlpha = L.alpha == null ? 1 : S.n(L.alpha, 1);
+    ctx.drawImage(t, 0, 0);
+    ctx.restore();
+  },
+
+  wedges(ctx, L, S) {
+    const n = Math.max(1, Math.round(S.n(L.count, 12)));
+    const sp = S.arr(L.spread, [0.04, 0.2]), ln = S.arr(L.length, [0.5, 1.2]);
+    const jit = S.n(L.jitter, 0);
+    ctx.fillStyle = S.col(L.color);
+    for (let i = 0; i < n; i++) {
+      const base = (i / n) * Math.PI * 2 + S.rot;
+      const a = base + (S.r() - 0.5) * jit * (Math.PI * 2 / n) * 2;
+      const half = (sp[0] + (sp[1] - sp[0]) * S.r()) * (Math.PI * 2 / n) * (0.6 + S.intensity * 1.6);
+      const len = (ln[0] + (ln[1] - ln[0]) * S.r()) * S.diag * 0.6;
+      ctx.beginPath();
+      ctx.moveTo(S.ex, S.ey);
+      ctx.lineTo(S.ex + Math.cos(a - half) * len, S.ey + Math.sin(a - half) * len);
+      ctx.lineTo(S.ex + Math.cos(a + half) * len, S.ey + Math.sin(a + half) * len);
+      ctx.closePath();
+      ctx.fill();
+    }
+  },
+
+  star(ctx, L, S) {
+    const pts = Math.max(3, Math.round(S.n(L.points, 8)));
+    const spread = S.n(L.spread, 0.05), len = S.n(L.length, 1) * S.diag * 0.6;
+    ctx.fillStyle = S.col(L.color);
+    ctx.beginPath();
+    for (let i = 0; i < pts * 2; i++) {
+      const a = (i / (pts * 2)) * Math.PI * 2 + S.rot;
+      const r = i % 2 ? spread * S.diag * 0.5 : len * (0.55 + 0.45 * S.r());
+      const px = S.ex + Math.cos(a) * r, py = S.ey + Math.sin(a) * r;
+      i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fill();
+  },
+
+  blobs(ctx, L, S) {
+    const n = Math.max(1, Math.round(S.n(L.count, 10)));
+    const rad = S.arr(L.radius, [6, 40]);
+    const spread = S.n(L.spread, 0.3) * S.diag;
+    const verts = Math.max(3, Math.round(S.n(L.vertices, 8)));
+    const wob = S.n(L.wobble, 0.4);
+    ctx.fillStyle = S.col(L.color);
+    for (let i = 0; i < n; i++) {
+      const a = S.r() * Math.PI * 2;
+      const d = Math.pow(S.r(), 0.7) * spread;
+      const cx = S.ex + Math.cos(a) * d, cy = S.ey + Math.sin(a) * d;
+      const rr = (rad[0] + (rad[1] - rad[0]) * S.r()) * S.k * (0.5 + S.intensity);
+      ctx.beginPath();
+      for (let v = 0; v <= verts; v++) {
+        const va = (v / verts) * Math.PI * 2;
+        const r = rr * (1 - wob / 2 + S.r() * wob);
+        const px = cx + Math.cos(va) * r, py = cy + Math.sin(va) * r;
+        v ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+      }
+      ctx.closePath();
+      ctx.fill();
+    }
+  },
+
+  chips(ctx, L, S) {
+    const n = Math.max(1, Math.round(S.n(L.count, 30)));
+    const size = S.arr(L.size, [1.5, 10]);
+    const spread = S.n(L.spread, 0.4) * S.diag;
+    const along = L.alignTo === 'vector';
+    const vang = Math.atan2(S.vy, S.vx);
+    ctx.fillStyle = S.col(L.color);
+    for (let i = 0; i < n; i++) {
+      const t = Math.pow(S.r(), 0.6);
+      let ox, oy;
+      if (along) {
+        const par = (S.r() * 2 - 1) * spread * (0.6 + S.intensity);
+        const perp = (S.r() * 2 - 1) * spread * 0.28;
+        ox = Math.cos(vang) * par - Math.sin(vang) * perp;
+        oy = Math.sin(vang) * par + Math.cos(vang) * perp;
+      } else {
+        const a = S.r() * Math.PI * 2;
+        ox = Math.cos(a) * t * spread; oy = Math.sin(a) * t * spread;
+      }
+      const w = (size[0] + (size[1] - size[0]) * S.r()) * S.k;
+      const h = w * (0.25 + S.r() * 0.7);
+      ctx.save();
+      ctx.translate(S.ex + ox, S.ey + oy);
+      ctx.rotate(along ? vang + (S.r() - 0.5) * 0.5 : S.r() * Math.PI);
+      ctx.beginPath();
+      ctx.moveTo(-w, -h); ctx.lineTo(w * (0.6 + S.r() * 0.8), -h * S.r());
+      ctx.lineTo(w * 0.4, h); ctx.lineTo(-w * (0.4 + S.r() * 0.6), h * 0.6);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+  },
+
+  speedLines(ctx, L, S) {
+    const n = Math.max(1, Math.round(S.n(L.count, 12)));
+    const len = S.n(L.length, 0.6) * S.diag;
+    const th = S.n(L.thickness, 2) * S.k;
+    const ang = L.angleFrom === 'vector' ? Math.atan2(S.vy, S.vx) : S.rot;
+    const ca = Math.cos(ang), sa = Math.sin(ang);
+    ctx.fillStyle = S.col(L.color);
+    for (let i = 0; i < n; i++) {
+      const perp = ((i + S.r() * 0.7) / n - 0.5) * S.diag * 0.9;
+      const px = S.ex - sa * perp, py = S.ey + ca * perp;
+      const back = len * (0.35 + S.r() * 0.9);
+      const fwd = len * (0.35 + S.r() * 0.9) * (0.4 + S.intensity);
+      const w = th * (0.4 + S.r() * 1.6);
+      ctx.beginPath();
+      ctx.moveTo(px - ca * back - sa * w * 0.15, py - sa * back + ca * w * 0.15);
+      ctx.lineTo(px + ca * fwd - sa * w, py + sa * fwd + ca * w);
+      ctx.lineTo(px + ca * fwd + sa * w, py + sa * fwd - ca * w);
+      ctx.closePath();
+      ctx.fill();
+    }
+  },
+
+  core(ctx, L, S) {
+    const r = Math.max(1, S.n(L.radius, 20) * S.k);
+    const g = ctx.createRadialGradient(S.ex, S.ey, 0, S.ex, S.ey, r * 2.4);
+    const c = S.col(L.color);
+    g.addColorStop(0, c);
+    g.addColorStop(0.42, c);
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(S.ex, S.ey, r * 2.4, 0, Math.PI * 2);
+    ctx.fill();
+  },
+
+  rgbSplit(ctx, L, S) {
+    const off = Math.round(S.n(L.offset, 4) * S.k);
+    if (off === 0) return;
+    const w = S.w, h = S.h;
+    const src = ctx.getImageData(0, 0, w, h);
+    const dst = ctx.createImageData(w, h);
+    const a = src.data, b = dst.data;
+    const angle = Math.atan2(S.vy, S.vx);
+    const ox = Math.round(Math.cos(angle) * off), oy = Math.round(Math.sin(angle) * off);
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const i = (y * w + x) * 4;
+        const rx = Math.min(w - 1, Math.max(0, x + ox)), ry = Math.min(h - 1, Math.max(0, y + oy));
+        const bx = Math.min(w - 1, Math.max(0, x - ox)), by = Math.min(h - 1, Math.max(0, y - oy));
+        b[i] = a[(ry * w + rx) * 4];
+        b[i + 1] = a[i + 1];
+        b[i + 2] = a[(by * w + bx) * 4 + 2];
+        b[i + 3] = 255;
+      }
+    }
+    ctx.putImageData(dst, 0, 0);
+  },
+
+  scanlines(ctx, L, S) {
+    const n = Math.max(2, Math.round(S.n(L.count, 80)));
+    const th = Math.max(1, S.n(L.thickness, 1) * S.k);
+    ctx.save();
+    ctx.globalAlpha = S.n(L.opacity, 0.15);
+    ctx.fillStyle = '#000';
+    const gap = S.h / n;
+    for (let i = 0; i < n; i++) ctx.fillRect(0, i * gap, S.w, th);
+    ctx.restore();
+  },
+
+  grain(ctx, L, S) {
+    const amt = S.n(L.amount, 20);
+    if (amt <= 0) return;
+    const img = ctx.getImageData(0, 0, S.w, S.h);
+    const d = img.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const v = (S.r() - 0.5) * amt;
+      d[i] += v; d[i + 1] += v; d[i + 2] += v;
+    }
+    ctx.putImageData(img, 0, 0);
+  }
+};
+
+class Component extends DCLogic {
+  state = {
+    presetId: 'shatter',
+    overrides: { threshold: 120, intensity: 0.6, count: 16, invertSubject: false, paletteId: 'mono', maskSource: 'lum' },
+    showMask: false,
+    output: { w: 720, h: 405, holdFrames: 2 },
+    epicenter: { x: 0.5, y: 0.5 },
+    vector: { dx: 1, dy: 0 },
+    energy: 0,
+    thumbA: null, thumbB: null,
+    onion: false, playing: false,
+    copyLabel: 'Copy PNG',
+    hasVideo: false, duration: 0, time: 0, videoName: 'No clip', scanning: false,
+    clipMode: 'none', gifIndex: 0, trimIn: null, trimOut: null,
+    timing: 0
+  };
+
+  el(sel) { return document.querySelector('[data-forge] ' + sel); }
+  get stage() { return this.el('[data-el="stage"]'); }
+  get overlay() { return this.el('[data-el="overlay"]'); }
+  imgs = { a: null, b: null };
+  cache = {};
+  seed = 90210;
+  holdIndex = 0;
+  manualEpi = false;
+
+  componentDidMount() {
+    if (this.props.startPreset && PRESETS.some(p => p.id === this.props.startPreset)) {
+      const p = PRESETS.find(x => x.id === this.props.startPreset);
+      this.state.presetId = p.id;
+      this.state.overrides.paletteId = p.palette;
+    }
+    this.loadDemo();
+    window.addEventListener('pointermove', this.onMove);
+    window.addEventListener('pointerup', this.onUp);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('pointermove', this.onMove);
+    window.removeEventListener('pointerup', this.onUp);
+    clearInterval(this.timer);
+    clearTimeout(this.raf);
+  }
+
+  /* ---------- source frames ---------- */
+
+  demoFrame(t) {
+    const c = makeCanvas(960, 540);
+    const x = c.getContext('2d');
+    x.fillStyle = '#0a0b11';
+    x.fillRect(0, 0, 960, 540);
+    x.fillStyle = '#e2e6f2';
+    x.beginPath(); x.arc(392, 176, 40, 0, 6.284); x.fill();
+    x.beginPath();
+    x.moveTo(356, 224); x.lineTo(430, 224); x.lineTo(444, 372); x.lineTo(344, 372);
+    x.closePath(); x.fill();
+    x.fillRect(348, 366, 28, 118);
+    x.fillRect(408, 366, 28, 118);
+    x.save();
+    x.translate(430, 254); x.rotate(t);
+    x.fillRect(0, -15, 132, 30);
+    x.fillRect(124, -7, 260, 14);
+    x.restore();
+    return c;
+  }
+
+  bump() { this.stamp = (this.stamp || 0) + 1; }
+
+  loadDemo = () => {
+    this.bump();
+    this.imgs.a = this.demoFrame(-0.95);
+    this.imgs.b = this.demoFrame(0.42);
+    this.manualEpi = false;
+    this.invalidate('frames');
+  };
+
+  clearFrames = () => {
+    this.bump();
+    this.imgs.a = null; this.imgs.b = null;
+    this.manualEpi = false;
+    this.setState({ thumbA: null, thumbB: null });
+    this.invalidate('frames');
+  };
+
+  loadInto(slot, file) {
+    if (!file || !/^image\//.test(file.type)) return;
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      this.bump();
+      this.imgs[slot] = img;
+      this.manualEpi = false;
+      this.invalidate('frames');
+    };
+    img.src = url;
+  }
+
+  prevent = e => { e.preventDefault(); };
+  pickA = () => { const i = this.el('[data-el="fileA"]'); if (i) i.click(); };
+  pickB = () => { const i = this.el('[data-el="fileB"]'); if (i) i.click(); };
+  onFileA = e => this.loadInto('a', e.target.files[0]);
+  onFileB = e => this.loadInto('b', e.target.files[0]);
+  dropA = e => { e.preventDefault(); this.loadInto('a', e.dataTransfer.files[0]); };
+  dropB = e => { e.preventDefault(); this.loadInto('b', e.dataTransfer.files[0]); };
+
+  /* ---------- video ---------- */
+
+  get video() { return this.el('[data-el="video"]'); }
+
+  pickV = () => { const i = this.el('[data-el="fileV"]'); if (i) i.click(); };
+  onFileV = e => this.loadVideo(e.target.files[0]);
+  dropV = e => { e.preventDefault(); this.loadVideo(e.dataTransfer.files[0]); };
+
+  loadVideo(file) {
+    this.clipToken = (this.clipToken || 0) + 1;
+    if (file && file.type === 'image/gif') return this.loadGif(file);
+    const v = this.video;
+    if (!v || !file || !/^video\//.test(file.type)) return;
+    this.gif = null;
+    this.state.clipMode = 'video';
+    const cc = this.el('[data-el="clipCanvas"]');
+    if (cc) cc.style.display = 'none';
+    if (this.vurl) URL.revokeObjectURL(this.vurl);
+    this.vurl = URL.createObjectURL(file);
+    v.onloadeddata = () => {
+      this.state.hasVideo = true;
+      this.state.trimIn = null; this.state.trimOut = null;
+      this.state.duration = this.vDuration();
+      this.state.videoName = file.name.length > 26 ? file.name.slice(0, 24) + '…' : file.name;
+      this.state.time = 0;
+      this.schedule();
+      const d = this.state.duration;
+      Promise.resolve()
+        .then(() => (d > 0 ? this.seek(d * 0.25) : null))
+        .then(() => this.grabPair())
+        .catch(err => { console.warn('video seek failed', err); this.schedule(); });
+    };
+    v.onerror = () => { console.warn('video failed to load'); this.state.hasVideo = false; this.schedule(); };
+    v.src = this.vurl;
+    v.load();
+  }
+
+  async loadGif(file) {
+    this.clipToken = (this.clipToken || 0) + 1;
+    if (typeof window.ImageDecoder === 'undefined') {
+      this.state.videoName = 'GIF decoding unsupported here';
+      this.forceUpdate();
+      return;
+    }
+    this.state.videoName = 'Decoding GIF…';
+    this.forceUpdate();
+    try {
+      const dec = new window.ImageDecoder({ data: await file.arrayBuffer(), type: 'image/gif' });
+      await dec.tracks.ready;
+      const track = dec.tracks.selectedTrack;
+      const n = Math.min(240, track.frameCount || 1);
+      const frames = [];
+      let base = null;
+      for (let i = 0; i < n; i++) {
+        const { image } = await dec.decode({ frameIndex: i, completeFramesOnly: true });
+        if (!base) base = makeCanvas(image.displayWidth, image.displayHeight);
+        base.getContext('2d').drawImage(image, 0, 0);
+        const c = makeCanvas(base.width, base.height);
+        c.getContext('2d').drawImage(base, 0, 0);
+        frames.push(c);
+        image.close();
+      }
+      if (!frames.length) throw new Error('no frames');
+      this.gif = frames;
+      this.state.clipMode = 'gif';
+      this.state.hasVideo = true;
+      this.state.gifIndex = 0;
+      this.state.trimIn = null; this.state.trimOut = null;
+      this.state.duration = 0;
+      this.state.videoName = file.name + ' · ' + frames.length + ' frames';
+      const v = this.video;
+      if (v) { v.removeAttribute('src'); v.style.display = 'none'; }
+      this.showGif(0);
+      this.grabPair();
+    } catch (err) {
+      console.warn('gif decode failed', err);
+      this.state.videoName = 'Could not decode that GIF';
+      this.forceUpdate();
+    }
+  }
+
+  showGif(i) {
+    if (!this.gif) return;
+    const b = this.clipBounds();
+    const idx = Math.max(b.lo, Math.min(b.hi, Math.round(i)));
+    this.state.gifIndex = idx;
+    const cc = this.el('[data-el="clipCanvas"]');
+    if (cc) {
+      cc.style.display = 'block';
+      const f = this.gif[idx];
+      const x = cc.getContext('2d');
+      x.clearRect(0, 0, cc.width, cc.height);
+      const s = Math.max(cc.width / f.width, cc.height / f.height);
+      x.drawImage(f, (cc.width - f.width * s) / 2, (cc.height - f.height * s) / 2, f.width * s, f.height * s);
+    }
+    return Promise.resolve();
+  }
+
+  clipBounds() {
+    const full = this.state.clipMode === 'gif' && this.gif
+      ? this.gif.length - 1
+      : (this.state.duration > 0 ? this.state.duration : 0);
+    const lo = this.state.trimIn == null ? 0 : Math.max(0, Math.min(full, this.state.trimIn));
+    const hi = this.state.trimOut == null ? full : Math.max(lo, Math.min(full, this.state.trimOut));
+    return { lo, hi, full };
+  }
+
+  clipPos() { return this.state.clipMode === 'gif' ? this.state.gifIndex : this.state.time; }
+
+  setIn = () => {
+    const { hi } = this.clipBounds();
+    const p = this.clipPos();
+    this.state.trimIn = p >= hi ? null : p;
+    this.schedule();
+  };
+  setOut = () => {
+    const { lo } = this.clipBounds();
+    const p = this.clipPos();
+    this.state.trimOut = p <= lo ? null : p;
+    this.schedule();
+  };
+  clearTrim = () => { this.state.trimIn = null; this.state.trimOut = null; this.schedule(); };
+
+  clearClip = () => {
+    const v = this.video;
+    if (v) { v.pause(); v.removeAttribute('src'); v.load(); v.style.display = 'none'; }
+    if (this.vurl) { URL.revokeObjectURL(this.vurl); this.vurl = null; }
+    const cc = this.el('[data-el="clipCanvas"]');
+    if (cc) { cc.getContext('2d').clearRect(0, 0, cc.width, cc.height); cc.style.display = 'none'; }
+    const inp = this.el('[data-el="fileV"]');
+    if (inp) inp.value = '';
+    this.clipToken = (this.clipToken || 0) + 1;
+    this.gif = null;
+    Object.assign(this.state, {
+      hasVideo: false, clipMode: 'none', duration: 0, time: 0,
+      gifIndex: 0, trimIn: null, trimOut: null, videoName: 'No clip'
+    });
+    this.clearFrames();
+  };
+
+  vDuration() {
+    const v = this.video;
+    if (!v) return 0;
+    if (isFinite(v.duration) && v.duration > 0) return v.duration;
+    try { if (v.seekable && v.seekable.length) { const e = v.seekable.end(v.seekable.length - 1); if (isFinite(e)) return e; } } catch (err) { /* not seekable yet */ }
+    return 0;
+  }
+
+  seek(t) {
+    const v = this.video;
+    if (!v) return Promise.resolve();
+    const d = this.vDuration();
+    const max = d > 0 ? Math.max(0, d - 0.02) : Number.MAX_SAFE_INTEGER;
+    const b = this.clipBounds();
+    const lo = b.hi > b.lo ? b.lo : 0;
+    const hi = b.hi > b.lo ? Math.min(max, b.hi) : max;
+    const to = Math.max(lo, Math.min(hi, isFinite(t) ? t : lo));
+    if (!isFinite(to)) return Promise.resolve();
+    this.state.time = to;
+    return new Promise(res => {
+      const done = () => { v.removeEventListener('seeked', done); res(); };
+      v.addEventListener('seeked', done);
+      v.currentTime = to;
+      setTimeout(done, 900);
+    });
+  }
+
+  grabFrame() {
+    if (this.state.clipMode === 'gif' && this.gif) {
+      const f = this.gif[this.state.gifIndex];
+      const c = makeCanvas(f.width, f.height);
+      c.getContext('2d').drawImage(f, 0, 0);
+      return c;
+    }
+    const v = this.video;
+    if (!v || !v.videoWidth) return null;
+    const c = makeCanvas(v.videoWidth, v.videoHeight);
+    c.getContext('2d').drawImage(v, 0, 0);
+    return c;
+  }
+
+  assign(slot) {
+    const f = this.grabFrame();
+    if (!f) return;
+    this.bump();
+    this.imgs[slot] = f;
+    this.manualEpi = false;
+    this.invalidate('frames');
+  }
+
+  grabA = () => this.assign('a');
+  grabB = () => this.assign('b');
+
+  grabPair = () => {
+    this.assign('a');
+    if (this.state.clipMode === 'gif') {
+      this.showGif(this.state.gifIndex + 1);
+      this.assign('b');
+      return Promise.resolve();
+    }
+    return this.seek(this.state.time + 1 / 24).then(() => this.assign('b'));
+  };
+
+  setTime = e => {
+    const v = +e.target.value;
+    if (this.state.clipMode === 'gif') { this.showGif(v); this.schedule(); return; }
+    this.seek(v).then(() => this.schedule());
+  };
+  stepBack = () => {
+    if (this.state.clipMode === 'gif') { this.showGif(this.state.gifIndex - 1); this.schedule(); return; }
+    this.seek(this.state.time - 1 / 24).then(() => this.schedule());
+  };
+  stepFwd = () => {
+    if (this.state.clipMode === 'gif') { this.showGif(this.state.gifIndex + 1); this.schedule(); return; }
+    this.seek(this.state.time + 1 / 24).then(() => this.schedule());
+  };
+
+  autoThreshold = () => {
+    const lum = this.maskField();
+    if (!lum) return;
+    const hist = new Float64Array(256);
+    for (let i = 0; i < lum.length; i++) hist[Math.max(0, Math.min(255, lum[i] | 0))]++;
+    let sum = 0;
+    for (let i = 0; i < 256; i++) sum += i * hist[i];
+    let sumB = 0, wB = 0, best = -1, thr = 128;
+    const total = lum.length;
+    for (let i = 0; i < 256; i++) {
+      wB += hist[i];
+      if (!wB) continue;
+      const wF = total - wB;
+      if (!wF) break;
+      sumB += i * hist[i];
+      const mB = sumB / wB, mF = (sum - sumB) / wF;
+      const between = wB * wF * (mB - mF) * (mB - mF);
+      if (between > best) { best = between; thr = i; }
+    }
+    this.patch('threshold', thr);
+  };
+
+  findImpact = async () => {
+    if (this.state.clipMode === 'gif' && this.gif) return this.findImpactGif();
+    const v = this.video;
+    if (!v || this.state.scanning) return;
+    const tok = this.clipToken || 0;
+    this.state.scanning = true;
+    this.forceUpdate();
+    const dur = this.vDuration();
+    if (dur <= 0) { this.state.scanning = false; return this.grabPair(); }
+    const b = this.clipBounds();
+    const lo = b.hi > b.lo ? b.lo : 0;
+    const span = b.hi > b.lo ? b.hi - b.lo : dur;
+    const n = Math.min(56, Math.max(12, Math.round(span * 12)));
+    const probe = makeCanvas(96, 54);
+    const px = probe.getContext('2d');
+    let prev = null, best = -1, bestT = 0;
+    for (let i = 0; i < n; i++) {
+      if ((this.clipToken || 0) !== tok) { this.state.scanning = false; this.schedule(); return; }
+      const t = lo + (i / (n - 1)) * span * 0.999;
+      await this.seek(t);
+      px.drawImage(v, 0, 0, 96, 54);
+      const lum = luminance(probe);
+      if (prev) {
+        let d = 0;
+        for (let k = 0; k < lum.length; k++) d += Math.abs(lum[k] - prev[k]);
+        if (d > best) { best = d; bestT = t; }
+      }
+      prev = lum;
+    }
+    if ((this.clipToken || 0) !== tok) { this.state.scanning = false; this.schedule(); return; }
+    const gap = span / Math.max(1, n - 1);
+    await this.seek(Math.max(lo, bestT - gap));
+    this.assign('a');
+    await this.seek(bestT);
+    this.assign('b');
+    this.state.scanning = false;
+    this.schedule();
+  };
+
+  async findImpactGif() {
+    if (this.state.scanning) return;
+    const tok = this.clipToken || 0;
+    this.state.scanning = true;
+    this.forceUpdate();
+    const probe = makeCanvas(96, 54);
+    const px = probe.getContext('2d');
+    const b = this.clipBounds();
+    let prev = null, best = -1, bestI = b.lo + 1;
+    for (let i = b.lo; i <= b.hi; i++) {
+      px.drawImage(this.gif[i], 0, 0, 96, 54);
+      const lum = luminance(probe);
+      if (prev) {
+        let d = 0;
+        for (let k = 0; k < lum.length; k++) d += Math.abs(lum[k] - prev[k]);
+        if (d > best) { best = d; bestI = i; }
+      }
+      prev = lum;
+    }
+    if ((this.clipToken || 0) !== tok || !this.gif) { this.state.scanning = false; this.schedule(); return; }
+    this.showGif(Math.max(b.lo, bestI - 1));
+    this.assign('a');
+    this.showGif(bestI);
+    this.assign('b');
+    this.state.scanning = false;
+    this.ensureResample();
+    this.ensureMask();
+    this.autoThreshold();
+  }
+
+  /* ---------- pipeline ---------- */
+
+  invalidate(stage) {
+    if (stage === 'frames') { this.cache.rk = null; }
+    if (stage === 'frames' || stage === 'mask') { this.cache.mk = null; this.cache.micro = null; }
+    this.schedule();
+  }
+
+  schedule() {
+    if (this.raf) return;
+    this.raf = setTimeout(() => { this.raf = null; this.run(); }, 0);
+  }
+
+  ensureResample() {
+    const { w, h } = this.state.output;
+    const key = w + 'x' + h + ':' + (this.imgs.a ? 1 : 0) + (this.imgs.b ? 1 : 0) + ':' + (this.stamp || 0);
+    if (this.cache.rk === key) return;
+    this.cache.rk = key;
+    this.cache.mk = null;
+    this.cache.cA = this.imgs.a ? resample(this.imgs.a, w, h) : null;
+    this.cache.cB = this.imgs.b ? resample(this.imgs.b, w, h) : null;
+    this.cache.lumA = this.cache.cA ? luminance(this.cache.cA) : null;
+    this.cache.lumB = this.cache.cB ? luminance(this.cache.cB) : null;
+    const d = diffStats(this.cache.lumA, this.cache.lumB, w, h);
+    this.cache.diff = d;
+    if (this.cache.lumA && this.cache.lumB) {
+      const la = this.cache.lumA, lb = this.cache.lumB;
+      const md = new Float32Array(la.length);
+      for (let i = 0; i < la.length; i++) md[i] = Math.abs(lb[i] - la[i]);
+      this.cache.motion = blurArray(md, w, h);
+    } else this.cache.motion = null;
+    const patch = { thumbA: this.cache.cA ? this.cache.cA.toDataURL('image/png') : null,
+                    thumbB: this.cache.cB ? this.cache.cB.toDataURL('image/png') : null };
+    if (d && !this.manualEpi) {
+      patch.epicenter = d.epicenter;
+      patch.vector = d.vector;
+      patch.energy = d.energy;
+    } else if (!d) {
+      patch.energy = 0;
+    }
+    Object.assign(this.state, patch);
+    this.pendingSync = true;
+  }
+
+  maskField() {
+    const motion = this.state.overrides.maskSource === 'motion' && this.cache.motion;
+    return motion ? this.cache.motion : this.cache.lumA;
+  }
+
+  ensureMask() {
+    const o = this.state.overrides;
+    const { w, h } = this.state.output;
+    const key = o.threshold + '/' + o.invertSubject + '/' + o.maskSource + '/' + this.cache.rk;
+    if (this.cache.mk === key) return;
+    this.cache.mk = key;
+    this.cache.micro = null;
+    if (o.maskSource === 'motion' && this.cache.motion) {
+      const m = maskFrom(this.cache.motion, w, h, o.threshold, o.invertSubject);
+      this.cache.maskA = m;
+      this.cache.maskB = m;
+    } else {
+      this.cache.maskA = this.cache.lumA ? maskFrom(this.cache.lumA, w, h, o.threshold, o.invertSubject) : null;
+      this.cache.maskB = this.cache.lumB ? maskFrom(this.cache.lumB, w, h, o.threshold, o.invertSubject) : null;
+    }
+  }
+
+  scene(w, h, seed) {
+    const o = this.state.overrides;
+    const pal = PALETTES.find(p => p.id === o.paletteId) || PALETTES[0];
+    const vars = { threshold: o.threshold, intensity: o.intensity, count: o.count, energy: this.state.energy };
+    const r = mulberry(seed);
+    const scale = w / this.state.output.w;
+    let maskA = this.cache.maskA, maskB = this.cache.maskB;
+    if (scale !== 1) {
+      if (maskA) { const c = makeCanvas(w, h); c.getContext('2d').drawImage(maskA, 0, 0, w, h); maskA = c; }
+      if (maskB) { const c = makeCanvas(w, h); c.getContext('2d').drawImage(maskB, 0, 0, w, h); maskB = c; }
+    }
+    return {
+      w, h, k: Math.max(0.2, scale * (w / 720) === 0 ? 1 : scale), r,
+      diag: Math.hypot(w, h),
+      intensity: o.intensity,
+      ex: this.state.epicenter.x * w, ey: this.state.epicenter.y * h,
+      vx: this.state.vector.dx, vy: this.state.vector.dy,
+      rot: r() * Math.PI * 2,
+      maskA, maskB,
+      col: role => (role === 'bg' ? pal.bg : pal.fg),
+      n: (v, dflt) => (v == null ? dflt : (typeof v === 'number' ? v : evalExpr(v, vars))),
+      arr: (v, dflt) => {
+        const a = Array.isArray(v) ? v : dflt;
+        return [typeof a[0] === 'number' ? a[0] : evalExpr(a[0], vars),
+                typeof a[1] === 'number' ? a[1] : evalExpr(a[1], vars)];
+      }
+    };
+  }
+
+  composite(ctx, preset, S) {
+    ctx.save();
+    ctx.clearRect(0, 0, S.w, S.h);
+    preset.layers.forEach(L => { const fn = LAYERS[L.type]; if (fn) { ctx.save(); fn(ctx, L, S); ctx.restore(); } });
+    ctx.restore();
+  }
+
+  preset() { return PRESETS.find(p => p.id === this.state.presetId) || PRESETS[0]; }
+
+  run() {
+    try { this.runInner(); } catch (err) { console.error('pipeline', err); }
+  }
+
+  runInner() {
+    const t0 = performance.now();
+    this.ensureResample();
+    this.ensureMask();
+    const { w, h } = this.state.output;
+    const cv = this.stage;
+    if (!cv) return;
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    const S = this.scene(w, h, this.seed + this.holdIndex * 7919);
+    S.k = w / 720;
+    this.composite(cv.getContext('2d'), this.preset(), S);
+    this.syncThumbs();
+    this.drawOverlay();
+    if (this.props.railPreviews !== false) this.drawRail();
+    this.state.timing = performance.now() - t0;
+    if (this.pendingSync) { this.pendingSync = false; this.forceUpdate(); }
+    else this.forceUpdate();
+  }
+
+  syncThumbs() {
+    const vid = this.video, hint = this.el('[data-el="videoHint"]');
+    if (vid && hint) {
+      vid.style.display = this.state.hasVideo ? "block" : "none";
+      hint.style.display = this.state.hasVideo ? "none" : "block";
+    }
+    [["thumbA", this.state.thumbA], ["thumbB", this.state.thumbB]].forEach(([k, v]) => {
+      const img = this.el('[data-el="' + k + '"]');
+      if (!img) return;
+      if (v) { if (img.getAttribute("src") !== v) img.setAttribute("src", v); img.style.display = "block"; }
+      else { img.removeAttribute("src"); img.style.display = "none"; }
+    });
+  }
+
+  drawRail() {
+    PRESETS.forEach(p => {
+      const cv = this.el('[data-preset="' + p.id + '"]');
+      if (!cv) return;
+      const S = this.scene(cv.width, cv.height, this.seed + 31);
+      S.k = cv.width / 720 * 3.2;
+      this.composite(cv.getContext('2d'), p, S);
+    });
+  }
+
+  drawOverlay() {
+    const ov = this.overlay, st = this.stage;
+    if (!ov || !st) return;
+    const w = st.width, h = st.height;
+    if (ov.width !== w || ov.height !== h) { ov.width = w; ov.height = h; }
+    const c = ov.getContext('2d');
+    c.clearRect(0, 0, w, h);
+    if (this.state.showMask && this.cache.maskA) {
+      const t = makeCanvas(w, h);
+      const tx = t.getContext('2d');
+      tx.drawImage(this.cache.maskA, 0, 0);
+      tx.globalCompositeOperation = 'source-in';
+      tx.fillStyle = '#9184d9';
+      tx.fillRect(0, 0, w, h);
+      c.globalAlpha = 0.5;
+      c.drawImage(t, 0, 0);
+      c.globalAlpha = 1;
+    }
+    if (this.state.onion && this.cache.cB) {
+      c.globalAlpha = 0.35;
+      c.drawImage(this.cache.cB, 0, 0);
+      c.globalAlpha = 1;
+    }
+    const ex = this.state.epicenter.x * w, ey = this.state.epicenter.y * h;
+    const s = w / 720;
+    const len = (60 + this.state.energy * 260) * s;
+    const vx = this.state.vector.dx, vy = this.state.vector.dy;
+    c.strokeStyle = '#9184d9';
+    c.fillStyle = '#9184d9';
+    c.lineWidth = 2 * s;
+    c.beginPath();
+    c.moveTo(ex - vx * len * 0.5, ey - vy * len * 0.5);
+    c.lineTo(ex + vx * len * 0.5, ey + vy * len * 0.5);
+    c.stroke();
+    const hx = ex + vx * len * 0.5, hy = ey + vy * len * 0.5;
+    const a = Math.atan2(vy, vx);
+    c.beginPath();
+    c.moveTo(hx, hy);
+    c.lineTo(hx - Math.cos(a - 0.4) * 14 * s, hy - Math.sin(a - 0.4) * 14 * s);
+    c.lineTo(hx - Math.cos(a + 0.4) * 14 * s, hy - Math.sin(a + 0.4) * 14 * s);
+    c.closePath();
+    c.fill();
+    c.beginPath();
+    c.arc(ex, ey, 9 * s, 0, 6.284);
+    c.stroke();
+    c.beginPath();
+    c.arc(ex, ey, 2.5 * s, 0, 6.284);
+    c.fill();
+  }
+
+  /* ---------- interaction ---------- */
+
+  setEpiFromEvent(e) {
+    const ov = this.overlay;
+    if (!ov) return;
+    const r = ov.getBoundingClientRect();
+    const x = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+    const y = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
+    this.manualEpi = true;
+    this.state.epicenter = { x, y };
+    this.schedule();
+  }
+
+  onStagePointer = e => { this.dragging = true; this.setEpiFromEvent(e); };
+  onMove = e => { if (this.dragging) this.setEpiFromEvent(e); };
+  onUp = () => { this.dragging = false; };
+
+  patch(key, value) {
+    this.state.overrides = Object.assign({}, this.state.overrides, { [key]: value });
+    this.invalidate(key === 'threshold' || key === 'invertSubject' || key === 'maskSource' ? 'mask' : 'composite');
+  }
+
+  setThreshold = e => this.patch('threshold', +e.target.value);
+  setIntensity = e => this.patch('intensity', +e.target.value);
+  setCount = e => this.patch('count', +e.target.value);
+  toggleInvert = () => this.patch('invertSubject', !this.state.overrides.invertSubject);
+  setMaskLum = () => { this.patch('maskSource', 'lum'); this.autoThreshold(); };
+  setMaskMotion = () => { if (!this.cache.motion) return; this.patch('maskSource', 'motion'); this.ensureMask(); this.autoThreshold(); };
+  toggleShowMask = () => { this.state.showMask = !this.state.showMask; this.schedule(); };
+  setHold = e => {
+    this.state.output = Object.assign({}, this.state.output, { holdFrames: +e.target.value });
+    this.schedule();
+  };
+  setSize = e => {
+    const [w, h] = e.target.value.split('x').map(Number);
+    this.state.output = Object.assign({}, this.state.output, { w, h });
+    this.invalidate('frames');
+  };
+  toggleOnion = () => { this.state.onion = !this.state.onion; this.schedule(); };
+  togglePlay = () => {
+    this.state.playing = !this.state.playing;
+    clearInterval(this.timer);
+    if (this.state.playing) {
+      this.timer = setInterval(() => {
+        this.holdIndex = (this.holdIndex + 1) % Math.max(1, this.state.output.holdFrames);
+        this.schedule();
+      }, 110);
+    } else { this.holdIndex = 0; this.schedule(); }
+  };
+
+  /* ---------- export ---------- */
+
+  download(blob, name) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  }
+
+  frameBlob(index) {
+    const { w, h } = this.state.output;
+    const cv = makeCanvas(w, h);
+    const S = this.scene(w, h, this.seed + index * 7919);
+    S.k = w / 720;
+    this.composite(cv.getContext('2d'), this.preset(), S);
+    return new Promise(res => cv.toBlob(res, 'image/png'));
+  }
+
+  exportPng = async () => {
+    const b = await this.frameBlob(this.holdIndex);
+    this.download(b, 'impact-' + this.state.presetId + '.png');
+  };
+
+  exportSeq = async () => {
+    const n = Math.max(1, this.state.output.holdFrames);
+    for (let i = 0; i < n; i++) {
+      const b = await this.frameBlob(i);
+      this.download(b, 'impact-' + this.state.presetId + '-' + String(i + 1).padStart(2, '0') + '.png');
+      await new Promise(r => setTimeout(r, 220));
+    }
+  };
+
+  copyPng = async () => {
+    try {
+      const b = await this.frameBlob(this.holdIndex);
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': b })]);
+      this.setState({ copyLabel: 'Copied' });
+    } catch (err) {
+      this.setState({ copyLabel: 'Copy blocked' });
+    }
+    setTimeout(() => this.setState({ copyLabel: 'Copy PNG' }), 1600);
+  };
+
+  /* ---------- view model ---------- */
+
+  renderVals() {
+    const o = this.state.overrides;
+    const layerNote = p => p.layers.map(l => l.type).slice(0, 3).join(' · ');
+    return {
+      thumbA: this.state.thumbA, thumbB: this.state.thumbB,
+      noA: !this.state.thumbA, noB: !this.state.thumbB,
+      pickA: this.pickA, pickB: this.pickB, dropA: this.dropA, dropB: this.dropB,
+      onFileA: this.onFileA, onFileB: this.onFileB, prevent: this.prevent,
+      loadDemo: this.loadDemo, clearFrames: this.clearFrames,
+      pickV: this.pickV, dropV: this.dropV, onFileV: this.onFileV,
+      noVideo: !this.state.hasVideo,
+      clipMin: this.clipBounds().lo,
+      clipMax: this.clipBounds().hi > this.clipBounds().lo ? this.clipBounds().hi : 10,
+      noTrim: this.state.trimIn == null && this.state.trimOut == null,
+      setIn: this.setIn, setOut: this.setOut, clearTrim: this.clearTrim, clearClip: this.clearClip,
+      trimLabel: (this.state.trimIn == null && this.state.trimOut == null) ? ''
+        : (this.state.clipMode === 'gif'
+            ? 'trim ' + (this.clipBounds().lo + 1) + '\u2013' + (this.clipBounds().hi + 1) + ' · '
+            : 'trim ' + this.clipBounds().lo.toFixed(2) + '\u2013' + this.clipBounds().hi.toFixed(2) + 's · '),
+      clipStep: this.state.clipMode === 'gif' ? 1 : 0.01,
+      clipPos: this.state.clipMode === 'gif' ? this.state.gifIndex : this.state.time,
+      autoThreshold: this.autoThreshold,
+      duration: this.state.duration > 0 ? this.state.duration : 10,
+      time: this.state.time,
+      videoLabel: this.state.videoName,
+      timeLabel: this.state.clipMode === 'gif' && this.gif
+        ? 'frame ' + (this.state.gifIndex + 1) + ' / ' + this.gif.length
+        : !this.state.hasVideo ? '—'
+        : this.state.duration > 0
+          ? this.state.time.toFixed(2) + ' s / ' + this.state.duration.toFixed(2) + ' s'
+          : this.state.time.toFixed(2) + ' s / duration unknown',
+      scanLabel: this.state.scanning ? 'Scanning…' : 'Find impact',
+      grabA: this.grabA, grabB: this.grabB, grabPair: this.grabPair,
+      setTime: this.setTime, stepBack: this.stepBack, stepFwd: this.stepFwd,
+      findImpact: this.findImpact,
+      presetCards: PRESETS.map(p => {
+        return {
+          id: p.id, name: p.name, layerNote: layerNote(p),
+          active: p.id === this.state.presetId,
+          select: () => {
+            this.state.presetId = p.id;
+            this.state.overrides = Object.assign({}, this.state.overrides, { paletteId: p.palette });
+            this.schedule();
+          }
+        };
+      }),
+      paletteChips: PALETTES.map(pal => ({
+        name: pal.name, bg: pal.bg, fg: pal.fg,
+        active: pal.id === o.paletteId,
+        select: () => this.patch('paletteId', pal.id)
+      })),
+      threshold: o.threshold, intensity: o.intensity, count: o.count,
+      holdFrames: this.state.output.holdFrames,
+      thresholdLabel: String(o.threshold),
+      intensityLabel: o.intensity.toFixed(2),
+      countLabel: String(o.count),
+      holdLabel: String(this.state.output.holdFrames),
+      invert: o.invertSubject,
+      toggleInvert: this.toggleInvert,
+      maskLum: o.maskSource !== 'motion',
+      maskMotion: o.maskSource === 'motion',
+      setMaskLum: this.setMaskLum, setMaskMotion: this.setMaskMotion,
+      showMask: this.state.showMask, toggleShowMask: this.toggleShowMask,
+      maskNote: o.maskSource === 'motion'
+        ? (this.cache.motion ? 'What moved between A and B.' : 'Needs both frames — falling back to brightness.')
+        : 'What is brighter than the threshold.',
+      setThreshold: this.setThreshold, setIntensity: this.setIntensity,
+      setCount: this.setCount, setHold: this.setHold, setSize: this.setSize,
+      sizeKey: this.state.output.w + 'x' + this.state.output.h,
+      onStagePointer: this.onStagePointer,
+      onion: this.state.onion, toggleOnion: this.toggleOnion,
+      playing: this.state.playing, togglePlay: this.togglePlay,
+      exportPng: this.exportPng, exportSeq: this.exportSeq, copyPng: this.copyPng,
+      copyLabel: this.state.copyLabel,
+      showDiag: this.props.showDiagnostics !== false,
+      epiLabel: this.state.epicenter.x.toFixed(2) + ', ' + this.state.epicenter.y.toFixed(2),
+      axisLabel: (Math.atan2(this.state.vector.dy, this.state.vector.dx) * 180 / Math.PI).toFixed(0) + '°',
+      energyLabel: (this.state.energy * 100).toFixed(1) + '%',
+      timingLabel: this.state.timing.toFixed(1) + ' ms'
+    };
+  }
+}
+</script>
+</body>
+</html>
